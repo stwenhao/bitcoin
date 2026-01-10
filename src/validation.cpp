@@ -4152,7 +4152,9 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
 
     // Check proof of work
     const Consensus::Params& consensusParams = chainman.GetConsensus();
-    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
+    // Check if the no-min-difficulty deployment is active (disables min-difficulty blocks)
+    bool deploymentActiveDisablesMinDiff = DeploymentActiveAfter(pindexPrev, chainman, Consensus::DEPLOYMENT_NOMINDIFFICULTY);
+    if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams, deploymentActiveDisablesMinDiff))
         return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");
 
     // Check timestamp against prev

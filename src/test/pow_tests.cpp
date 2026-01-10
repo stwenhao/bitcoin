@@ -5,6 +5,7 @@
 #include <chain.h>
 #include <chainparams.h>
 #include <pow.h>
+#include <primitives/block.h>
 #include <test/util/random.h>
 #include <test/util/setup_common.h>
 #include <util/chaintype.h>
@@ -206,6 +207,41 @@ BOOST_AUTO_TEST_CASE(ChainParams_TESTNET4_sanity)
 BOOST_AUTO_TEST_CASE(ChainParams_SIGNET_sanity)
 {
     sanity_check_chainparams(*m_node.args, ChainType::SIGNET);
+}
+
+/* Test that GetNextWorkRequired respects deploymentActiveDisablesMinDiff parameter */
+BOOST_AUTO_TEST_CASE(get_next_work_deployment_disables_min_difficulty)
+{
+    const auto chainParams = CreateChainParams(*m_node.args, ChainType::TESTNET4);
+    const auto& consensus = chainParams->GetConsensus();
+    
+    // Create a block index at a non-retarget height
+    CBlockIndex pindexLast;
+    pindexLast.nHeight = 100; // Not at a retarget boundary
+    pindexLast.nTime = 1000000;
+    pindexLast.nBits = 0x1e7fffff; // Some difficulty (not minimum)
+    pindexLast.pprev = nullptr;
+    
+    // Create a block header with timestamp > 20 minutes after last block
+    // This would normally allow min-difficulty if fPowAllowMinDifficultyBlocks is true
+    CBlockHeader block;
+    block.nTime = pindexLast.nTime + consensus.nPowTargetSpacing * 3; // 30 minutes later
+    
+    // Test without deployment active (should allow min-difficulty)
+    unsigned int nBitsWithoutDeployment = GetNextWorkRequired(&pindexLast, &block, consensus, false);
+    unsigned int nPowLimit = UintToArith256(consensus.powLimit).GetCompact();
+    
+    // With fPowAllowMinDifficultyBlocks=true and deployment inactive, min-difficulty should be allowed
+    if (consensus.fPowAllowMinDifficultyBlocks) {
+        BOOST_CHECK_EQUAL(nBitsWithoutDeployment, nPowLimit); // Should return min-difficulty
+    }
+    
+    // Test with deployment active (should disable min-difficulty)
+    unsigned int nBitsWithDeployment = GetNextWorkRequired(&pindexLast, &block, consensus, true);
+    
+    // With deployment active, should maintain the same difficulty as last block (no min-difficulty)
+    BOOST_CHECK_EQUAL(nBitsWithDeployment, pindexLast.nBits); // Should return last block's difficulty
+    BOOST_CHECK(nBitsWithDeployment != nPowLimit); // Should NOT be min-difficulty
 }
 
 BOOST_AUTO_TEST_SUITE_END()

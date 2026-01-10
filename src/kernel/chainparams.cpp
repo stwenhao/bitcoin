@@ -118,6 +118,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 1815; // 90%
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 2016;
 
+        // Deployment to disable minimum difficulty blocks (testnet4 only)
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].min_activation_height = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].threshold = 1916; // 95% for mainnet
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].period = 2016;
+
         consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000dee8e2a309ad8a9820433c68"};
         consensus.defaultAssumeValid = uint256{"00000000000000000000611fd22f2df7c8fbd0688745c3a6c3bb5109cc2a12cb"}; // 912683
 
@@ -243,6 +251,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 1512; // 75%
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 2016;
 
+        // Deployment to disable minimum difficulty blocks (testnet4 only)
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].min_activation_height = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].threshold = 1512; // 75% for testchains
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].period = 2016;
+
         consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000000016dd270dd94fac1d7632"};
         consensus.defaultAssumeValid = uint256{"0000000000000065c6c38258e201971a3fdfcc2ceee0dd6e85a6c022d45dee34"}; // 4550000
 
@@ -344,6 +360,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 1512; // 75%
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 2016;
+
+        // Deployment to disable minimum difficulty blocks on testnet4 (hardfork)
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nStartTime = 0; // Start immediately
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].min_activation_height = 150000; // Activate at height 150000
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].threshold = 1512; // 75% for testchains
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].period = 2016;
 
         consensus.nMinimumChainWork = uint256{"00000000000000000000000000000000000000000000034a4690fe592dc49c7c"};
         consensus.defaultAssumeValid = uint256{"000000000000000180a58e7fa3b0db84b5ea76377524894f53660d93ac839d9b"}; // 91000
@@ -490,6 +514,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 1815; // 90%
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 2016;
 
+        // Deployment to disable minimum difficulty blocks (testnet4 only)
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].min_activation_height = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].threshold = 1815; // 90% for signet
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].period = 2016;
+
         // message start is defined as the first 4 bytes of the sha256d of the block script
         HashWriter h{};
         h << consensus.signet_challenge;
@@ -572,6 +604,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 108; // 75%
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 144;
+
+        // Deployment to disable minimum difficulty blocks (testnet4 only)
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].min_activation_height = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].threshold = 108; // 75% for regtest
+        consensus.vDeployments[Consensus::DEPLOYMENT_NOMINDIFFICULTY].period = 144; // Faster for regtest
 
         consensus.nMinimumChainWork = uint256{};
         consensus.defaultAssumeValid = uint256{};
