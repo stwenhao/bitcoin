@@ -411,7 +411,7 @@ public:
         vFixedSeeds = std::vector<uint8_t>(std::begin(chainparams_seed_testnet4), std::end(chainparams_seed_testnet4));
 
         fDefaultConsistencyChecks = false;
-        m_is_mockable_chain = false;
+        m_is_mockable_chain = true;
 
         m_assumeutxo_data = {
             {
